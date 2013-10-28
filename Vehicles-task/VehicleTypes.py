@@ -1,19 +1,14 @@
 from time import time
 import glob
 
-all_files = glob.glob('2012-02-*.csv')
-
-total_records = 0
-record_v1 = 0
-record_v2 = 0
-record_v3 = 0
-overall = 0
+def print_msg(msg):
+    print(msg)
 
 def vehicle_prcess(filename):
-    vehicles = {"v1":0, "v2":0, "v3":0}  
+    vehicles = [0,0,0]  
     counter = 1
     f = open(filename)
-    print('Processing file: ', filename, '...')
+    print_msg('Processing file: %s' % filename+ '...')
 
     start = time()
 
@@ -26,33 +21,41 @@ def vehicle_prcess(filename):
         
         total_records += 1
         if line[len(line)-2:len(line)-1] == '1':
-           vehicles["v1"] += 1
+           vehicles[0] += 1
            record_v1 +=1
         elif line[len(line)-2:len(line)-1] == '2':
-            vehicles["v2"] += 1
+            vehicles[1] += 1
             record_v2 +=1
         else:
-            vehicles["v3"] += 1
+            vehicles[2] += 1
             record_v3 +=1
 
     end = time()
     overall += (end-start)
-    print("Processing time: ", str(end-start), 'seconds')
+    print_msg("Processing time: "+str(end-start)+'seconds')
 
     for vehicle in vehicles:
-        print("Vehicle type ", str(counter), " --> ", vehicles[vehicle], 'counts')
+        print("Vehicle type ", str(counter), " --> ", vehicle, 'counts')
         counter+=1
-    print('------------------------------------------------')
+    print_msg('------------------------------------------------')
+
+all_files = glob.glob('2012-02-*.csv')
+
+total_records = 0
+record_v1 = 0
+record_v2 = 0
+record_v3 = 0
+overall = 0
 
 for filename in all_files:
     vehicle_prcess(filename)
 
-print("Processed files: ", len(all_files))
-print("Processed records: ", total_records)
-print("Processed vehicles:")
-print("Vehicle type 1: ", record_v1)
-print("Vehicle type 2: ", record_v2)
-print("Vehicle type 3: ", record_v3)
-print("Done in: ", overall, 'sec.')
+print_msg("Processed files: %s" % len(all_files))
+print_msg("Processed records: %s" % total_records)
+print_msg("Processed vehicles:")
+print_msg("Vehicle type 1: %s" % record_v1)
+print_msg("Vehicle type 2: %s" % record_v2)
+print_msg("Vehicle type 3: %s" % record_v3)
+print_msg("Done in: %s" % overall+'sec.')
 
 a = input("Press enter to exit")
